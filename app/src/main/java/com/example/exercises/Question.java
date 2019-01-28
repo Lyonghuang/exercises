@@ -6,15 +6,13 @@ public class Question {
     private String answerB;
     private String answerC;
     private String answerD;
-    private String answer;
 
-    public Question(String questionText, String answerA, String answerB, String answerC, String answerD, String answer) {
+    public Question(String questionText, String answerA, String answerB, String answerC, String answerD) {
         this.questionText = questionText;
         this.answerA = answerA;
         this.answerB = answerB;
         this.answerC = answerC;
         this.answerD = answerD;
-        this.answer = answer;
     }
 
     public String getQuestionText() {
@@ -55,13 +53,5 @@ public class Question {
 
     public void setAnswerD(String answerD) {
         this.answerD = answerD;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
     }
 }

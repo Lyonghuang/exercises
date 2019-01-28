@@ -1,5 +1,7 @@
 package com.example.exercises;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +9,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button getQuestion;
+    private Button getQuestion;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +26,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.get_question:
-                new NetAsyncTask("http://192.168.1.4:8080/Exercises/NetTest", "请稍等，正在获取题目……", new DoFinally() {
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setTitle("请稍等");
+                progressDialog.setMessage("请稍等，正在获取题目……");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                new NetAsyncTask("http://192.168.1.4:8080/ExerciseServer/Exercise", new DoFinally() {
                     @Override
                     public void doFinally(Object o) {
                         String result = (String)o;
-                        Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                        progressDialog.cancel();
+                        Intent intent = new Intent(MainActivity.this, DoExercise.class);
+                        intent.putExtra("questions", result);
+                        startActivity(intent);
                     }
                 });
         }

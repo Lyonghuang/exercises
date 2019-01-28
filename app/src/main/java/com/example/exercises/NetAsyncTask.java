@@ -12,12 +12,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class NetAsyncTask {
-    private String hintString;
     private DoFinally doFinally;
-    ProgressDialog progressDialog;
 
-    public NetAsyncTask(String urlString, String hintString, DoFinally doFinally) {
-        this.hintString = hintString;
+    public NetAsyncTask(String urlString, DoFinally doFinally) {
         this.doFinally = doFinally;
         new MyAsyncTask().execute(urlString);
     }
@@ -26,11 +23,7 @@ public class NetAsyncTask {
         private StringBuilder response = null;
         @Override
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(MyApplication.getContext());
-            progressDialog.setTitle("@string/progress_title");
-            progressDialog.setMessage(hintString);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+
         }
 
         @Override
@@ -58,6 +51,8 @@ public class NetAsyncTask {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             return response.toString();
@@ -65,7 +60,6 @@ public class NetAsyncTask {
 
         @Override
         protected void onPostExecute(String s) {
-            progressDialog.cancel();
             doFinally.doFinally(s);
         }
     }
